@@ -24,11 +24,11 @@ const UploadVideo = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      const data = response.data;
+      const rsp_data = response.data;
       if (response.status === 200) {
         setIsUploaded(true);
-        console.log(data);
-        setVideoId(data.id);
+        console.log(rsp_data);
+        setVideoId(rsp_data?.id);
       } else {
         setIsUploaded(false);
       }
@@ -77,7 +77,7 @@ const UploadVideo = () => {
       {!isLoading &&
         (isUploaded ? (
           <p>
-            Video Uploaded
+            Video Uploaded{" "}
             {videoId !== "" && (
               <a href={`https://www.youtube.com/watch?v=${videoId}`}>
                 Video Link

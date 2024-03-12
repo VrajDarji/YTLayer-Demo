@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { SetToken } from "@/hooks/SetToken";
 
 export const authConfig: NextAuthOptions = {
   providers: [
@@ -14,20 +15,25 @@ export const authConfig: NextAuthOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, account }) {
-      if (account && token) {
+      if (account && !token.accessToken) {
         token.accessToken = account.access_token as string;
-        console.log(account.id_token);
-        console.log(token.accessToken);
+        SetToken.setState({ initial_token: token.accessToken });
+        console.log(SetToken.getState().initial_token);
       }
       return token;
     },
     async session({ session, token, user }) {
       if (session && user && token) {
-        session.user = user;
-        session.token = token.accessToken;
-        console.log(session.token);
+        session.name = user.name as string;
+        session.email = user.email as string;
+        session.image = user.image as string;
+        const initialToken = SetToken.getState().initial_token;
+        console.log(initialToken);
+        session.access_token = initialToken;
+        console.log(session.access_token);
       }
       return session;
     },
