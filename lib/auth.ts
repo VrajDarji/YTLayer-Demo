@@ -10,7 +10,7 @@ export const authConfig: NextAuthOptions = {
       authorization: {
         params: {
           scope:
-            "openid email profile https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.channel-memberships.creator https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/youtubepartner-channel-audit",
+            "openid email profile https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.channel-memberships.creator https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/youtubepartner-channel-audit https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
         },
       },
     }),
@@ -21,7 +21,6 @@ export const authConfig: NextAuthOptions = {
       if (account && !token.accessToken) {
         token.accessToken = account.access_token as string;
         SetToken.setState({ initial_token: token.accessToken });
-        console.log(SetToken.getState().initial_token);
       }
       return token;
     },
@@ -31,9 +30,7 @@ export const authConfig: NextAuthOptions = {
         session.email = user.email as string;
         session.image = user.image as string;
         const initialToken = SetToken.getState().initial_token;
-        console.log(initialToken);
         session.access_token = initialToken;
-        console.log(session.access_token);
       }
       return session;
     },

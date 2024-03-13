@@ -2,6 +2,7 @@ import { google, youtube_v3 } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import { getToken } from "next-auth/jwt";
+
 const auth = new google.auth.OAuth2({
   clientId: process.env.GOOGLE_CLIENT_ID as string,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -21,13 +22,12 @@ export async function POST(req: NextRequest) {
     const media = formData.get("media") as File;
 
     if (!title || !description || !media) {
-      return new NextResponse("Important data/field missing", { status: 402 });
+      return new NextResponse("Important data/field missing", { status: 400 });
     }
 
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    console.log(token?.accessToken);
     if (!token?.accessToken) {
-      return new NextResponse("Unauthorized", { status: 404 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
     auth.setCredentials({
       access_token: token.accessToken,

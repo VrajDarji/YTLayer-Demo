@@ -19,7 +19,7 @@ const UploadVideo = () => {
         formData.append("media", media);
       }
 
-      const response = await axios.post("/api/YT", formData, {
+      const response = await axios.post("/api/YT/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
